@@ -24,8 +24,8 @@ OpenAirInterface is under OpenAirInterface Software Alliance license.
 
 ##### Data Structures
 
-* `UE_list_t` at `LAYER2/MAC/mac.h`: UE list used by eNB to order UEs/CC for scheduling
+* `UE_list_t` at `LAYER2/MAC/mac.h:1190`: UE list used by eNB to order UEs/CC for scheduling
 
-* downlink scheduling function `schedule_ue_spec`
+* downlink scheduling function `schedule_ue_spec` at `eNB_scheduler_dlsch.c: 457`: This is possiblily the place that could be modified.
 
-* uplink scheduling function `schedule_ulsch_rnti`
+* uplink scheduling function `schedule_ulsch_rnti` 
