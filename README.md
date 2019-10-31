@@ -10,4 +10,12 @@ OpenAirInterface is under OpenAirInterface Software Alliance license.
 
 #### `openair2/LAYER2/MAC/eNB_scheduler.c`
 
-- Main 
+- Main function that triggers the scheduling procedure: `eNB_dlsch_ulsch_scheduler` at 572. Called by *Physical Interface* `IF_Module.c` function `UL_indication`.
+
+- Scheduler mode: 
+  1) `eNB->scheduler_mode == SCHED_MODE_DEFAULT` 
+  2) `eNB->scheduler_mode == SCHED_MODE_FAIR_RR`
+ 
+ - Scheduling Master Information Block(MIB) `:971`
+
+

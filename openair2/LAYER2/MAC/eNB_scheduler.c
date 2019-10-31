@@ -640,7 +640,8 @@ eNB_dlsch_ulsch_scheduler(module_id_t module_idP,
           if (UE_scheduling_control->drx_retransmission_timer[harq_process_id] > 0) {
             UE_scheduling_control->drx_retransmission_timer[harq_process_id]++;
 
-            if (UE_scheduling_control->drx_retransmission_timer[harq_process_id] > UE_scheduling_control->drx_retransmission_timer_thres[harq_process_id]) {
+            if (UE_scheduling_control->drx_retransmission_timer[harq_process_id] >
+                    UE_scheduling_control->drx_retransmission_timer_thres[harq_process_id]) {
               UE_scheduling_control->drx_retransmission_timer[harq_process_id] = 0;
             }
           }
@@ -756,7 +757,7 @@ eNB_dlsch_ulsch_scheduler(module_id_t module_idP,
         }
 
         /* Update Active Time status of UE
-         * Based on 36.321 5.7 the differents conditions for the UE to be in Acttive Should be check ONLY
+         * Based on 36.321 5.7 the different conditions for the UE to be in Active Should be check ONLY
          * here for the current subframe. The variable 'UE_scheduling_control->in_active_time' should be updated
          * ONLY here. The variable can then be used for testing the actual state of the UE for scheduling purpose.
          */
@@ -850,7 +851,8 @@ eNB_dlsch_ulsch_scheduler(module_id_t module_idP,
       if (UE_scheduling_control->ue_reestablishment_reject_timer > 0) {
         UE_scheduling_control->ue_reestablishment_reject_timer++;
 
-        if (UE_scheduling_control->ue_reestablishment_reject_timer >= UE_scheduling_control->ue_reestablishment_reject_timer_thres) {
+        if (UE_scheduling_control->ue_reestablishment_reject_timer >=
+                UE_scheduling_control->ue_reestablishment_reject_timer_thres) {
           UE_scheduling_control->ue_reestablishment_reject_timer = 0;
 
           /* Clear reestablish_rnti_map */
@@ -947,6 +949,8 @@ eNB_dlsch_ulsch_scheduler(module_id_t module_idP,
 #endif
 
   static int debug_flag = 0;
+
+  // declare function pointer to ulsch and dlsch scheduling
   void (*schedule_ulsch_p)(module_id_t module_idP, frame_t frameP, sub_frame_t subframe) = NULL;
   void (*schedule_ue_spec_p)(module_id_t module_idP, frame_t frameP, sub_frame_t subframe, int *mbsfn_flag) = NULL;
 
