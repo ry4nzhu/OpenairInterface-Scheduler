@@ -34,4 +34,10 @@ OpenAirInterface is under OpenAirInterface Software Alliance license.
 
 - `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 771` : Resource block
 
+- `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 951 TBS = get_TBS_DL(eNB_UE_stats->dlsch_mcs1,nb_available_rb);`  
+
 - uplink scheduling function `schedule_ulsch_rnti`
+
+- `uint32_t get_TBS_DL(uint8_t mcs, uint16_t nb_rb) at 110` in `openair1/PHY/lte_transport/lte_mcs.c`
+
+- Transfer block table at `openair1/PHY/LTE_TRANSPORT/dlsch_tbs_full.h : 27 TBStable[TBStable_rowCnt][110]` 
