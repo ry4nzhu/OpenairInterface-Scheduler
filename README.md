@@ -32,6 +32,6 @@ OpenAirInterface is under OpenAirInterface Software Alliance license.
 
 - `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 612`
 
-- `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 771` : resource block
+- `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 771` : Resource block
 
 - uplink scheduling function `schedule_ulsch_rnti`
