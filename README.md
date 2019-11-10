@@ -22,7 +22,7 @@ OpenAirInterface is under OpenAirInterface Software Alliance license.
 
 #### Default Scheduler
 
-- UE specific DLSCH scheduling. Retrieves next ue to be scheduled from round-robin scheduler and gets the appropriate harq_pid for the subframe from PHY. If the process is active and requires a retransmission, it schedules the retransmission with the same PRB count and MCS as the first transmission. Otherwise it consults RLC for DCCH/DTCH SDUs (status with maximum number of available PRBS), builds the MAC header (timing advance sent by default) and copies. 
+- UE specific DLSCH scheduling. Retrieves next ue to be scheduled from round-robin scheduler and gets the appropriate harq_pid for the subframe from PHY. If the process is active and requires a retransmission, it schedules the retransmission with the same PRB count and MCS as the first transmission. Otherwise it consults RLC for DCCH/DTCH SDUs (status with maximum number of available PRBS), builds the MAC header (timing advance sent by default) and copies.
 
 ##### Data Structures
 
@@ -32,12 +32,12 @@ OpenAirInterface is under OpenAirInterface Software Alliance license.
 
 - `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 612`
 
-- `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 771` : resource block
+- `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 771` : Resource block
 
 - `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 951 TBS = get_TBS_DL(eNB_UE_stats->dlsch_mcs1,nb_available_rb);`  
 
-- uplink scheduling function `schedule_ulsch_rnti`
-
 - `uint32_t get_TBS_DL(uint8_t mcs, uint16_t nb_rb) at 110` in `openair1/PHY/lte_transport/lte_mcs.c`
 
-- Transfer block table at `openair1/PHY/LTE_TRANSPORT/dlsch_tbs_full.h : 27 TBStable[TBStable_rowCnt][110]` 
+- Transfer block table at `openair1/PHY/LTE_TRANSPORT/dlsch_tbs_full.h : 27 TBStable[TBStable_rowCnt][110]`
+
+- uplink scheduling function `schedule_ulsch_rnti`
