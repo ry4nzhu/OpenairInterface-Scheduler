@@ -11,4 +11,4 @@ cmake_targets/lte-simulators/cmake-build-debug/
 cmake_targets/lte-simulators/cmake-build-debug/CMakeCache.txt
 cmake_targets/lte-simulators/cmake-build-debug/CMakeFiles/clion-log.txt
 .vscode/
-
+cmake_targets/cmake-build-debug/
