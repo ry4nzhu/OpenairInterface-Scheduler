@@ -17,6 +17,8 @@ void dump_eNB_statistics(module_id_t module_idP) {
 
     eNB_MAC_INST *eNB = RC.mac[module_idP];
 	UE_list_t *UE_list;
+	int CC_id = 0;
+	int eNB_id = 0;
 
 
     for (CC_id=0 ; CC_id < MAX_NUM_CCs; CC_id++) {
@@ -66,8 +68,8 @@ void dump_eNB_statistics(module_id_t module_idP) {
         
         // TODO: Add UE-specific parameters
 
-        for (UE_id=UE_list->head; UE_id>=0; UE_id=UE_list->next[UE_id]) {
-            for (i=0; i<UE_list->numactiveCCs[UE_id]; i++) {
+        for (int UE_id=UE_list->head; UE_id>=0; UE_id=UE_list->next[UE_id]) {
+            for (int i=0; i<UE_list->numactiveCCs[UE_id]; i++) {
                 CC_id=UE_list->ordered_CCids[i][UE_id];
             
                 UE_list->eNB_UE_stats[CC_id][UE_id].dlsch_bitrate=((UE_list->eNB_UE_stats[CC_id][UE_id].TBS*8)/((eNB->frame + 1)*10));
@@ -138,13 +140,13 @@ void dump_eNB_statistics(module_id_t module_idP) {
                         );
             }
             
-            PROTOCOL_CTXT_SET_BY_MODULE_ID(&ctxt,
-                            eNB_id,
-                            ENB_FLAG_YES,
-                            UE_list->eNB_UE_stats[0][UE_id].crnti,//UE_PCCID(eNB_id,UE_id)][UE_id].crnti, 
-                            eNB->frame,
-                            eNB->subframe,
-                            eNB_id);
+            // PROTOCOL_CTXT_SET_BY_MODULE_ID(&ctxt,
+            //                 eNB_id,
+            //                 ENB_FLAG_YES,
+            //                 UE_list->eNB_UE_stats[0][UE_id].crnti,//UE_PCCID(eNB_id,UE_id)][UE_id].crnti, 
+            //                 eNB->frame,
+            //                 eNB->subframe,
+            //                 eNB_id);
             /*
             rlc_status = rlc_stat_req(&ctxt,
                         SRB_FLAG_YES,
