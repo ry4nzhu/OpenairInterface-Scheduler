@@ -517,7 +517,7 @@ int dump_ue_stats(PHY_VARS_UE *ue, UE_rxtx_proc_t *proc,char *buffer, int length
   return len;
 } // is_clusterhead
 
-/*
+
 int dump_eNB_stats(PHY_VARS_eNB *eNB, char* buffer, int length)
 {
 
@@ -768,4 +768,4 @@ int dump_eNB_stats(PHY_VARS_eNB *eNB, char* buffer, int length)
 
   return len;
 }
-*/
+
