@@ -106,7 +106,7 @@ void dump_eNB_statistics(module_id_t module_idP) {
                             );
                 
 
-            printf("[MAC] UE %d (ULSCH), Status %s, Failute timer %d, RNTI %x : rx power (normalized %d,  target %d), MCS (pre %d, post %d), RB (rx %d, retx %d, total %d), Current TBS %d \n",
+                printf("[MAC] UE %d (ULSCH), Status %s, Failute timer %d, RNTI %x : rx power (normalized %d,  target %d), MCS (pre %d, post %d), RB (rx %d, retx %d, total %d), Current TBS %d \n",
                         UE_id,
                         map_int_to_str(rrc_status_names, UE_list->eNB_UE_stats[CC_id][UE_id].rrc_status),
                         UE_list->UE_sched_ctrl[UE_id].ul_failure_timer,
@@ -121,7 +121,7 @@ void dump_eNB_statistics(module_id_t module_idP) {
                         UE_list->eNB_UE_stats[CC_id][UE_id].ulsch_TBS
                     );
 
-            printf("[MAC] ULSCH bitrate (TTI %d, avg %d), received bytes (total %"PRIu64"),"
+                printf("[MAC] ULSCH bitrate (TTI %d, avg %d), received bytes (total %"PRIu64"),"
                         "Total received PDU %d, Total errors %d\n", 
                         UE_list->eNB_UE_stats[CC_id][UE_id].ulsch_bitrate,
                         UE_list->eNB_UE_stats[CC_id][UE_id].total_ulsch_bitrate,
@@ -301,9 +301,10 @@ void dump_eNB_statistics(module_id_t module_idP) {
                     stat_rx_pdcp_sdu,
                     stat_rx_pdcp_bytes);
                     
-            */
+        
 
-            }  		
+            }  	
+            */	
         }
     }
 }
