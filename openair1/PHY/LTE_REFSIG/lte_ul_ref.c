@@ -20,9 +20,9 @@
  */
 
 #ifdef MAIN
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 #endif
 #include "lte_refsig.h"
 #include "PHY/defs_eNB.h"
@@ -43,7 +43,8 @@ char ref24[720] = {
   -1,3,1,-3,3,-1,1,3,-3,3,1,3,-3,3,1,1,-1,1,3,-3,3,-3,-1,-3,-3,3,-3,-3,-3,1,-3,-3,3,-1,1,1,1,3,1,-1,3,-3,-3,1,3,1,1,-3,3,-1,3,3,1,1,-3,3,3,3,3,1,-1,3,-1,1,1,-1,-3,-1,-1,1,3,3,-1,-3,1,1,3,-3,1,1,-3,-1,-1,1,3,1,3,1,-1,3,1,1,-3,-1,-3,-1,-1,-1,-1,-3,-3,-1,1,1,3,3,-1,3,-1,1,-1,-3,1,-1,-3,-3,1,-3,-1,-1,-3,1,1,3,-1,1,3,1,-3,1,-3,1,1,-1,-1,3,-1,-3,3,-3,-3,-3,1,1,1,1,-1,-1,3,-3,-3,3,-3,1,-1,-1,1,-1,1,1,-1,-3,-1,1,-1,3,-1,-3,-3,3,3,-1,-1,-3,-1,3,1,3,1,3,1,1,-1,3,1,-1,1,3,-3,-1,-1,1,-3,1,3,-3,1,-1,-3,3,-3,3,-1,-1,-1,-1,1,-3,-3,-3,1,-3,-3,-3,1,-3,1,1,-3,3,3,-1,-3,-1,3,-3,3,3,3,-1,1,1,-3,1,-1,1,1,-3,1,1,-1,1,-3,-3,3,-1,3,-1,-1,-3,-3,-3,-1,-3,-3,1,-1,1,3,3,-1,1,-1,3,1,3,3,-3,-3,1,3,1,-1,-3,-3,-3,3,3,-3,3,3,-1,-3,3,-1,1,-3,1,1,3,3,1,1,1,-1,-1,1,-3,3,-1,1,1,-3,3,3,-1,-3,3,-3,-1,-3,-1,3,-1,-1,-1,-1,-3,-1,3,3,1,-1,1,3,3,3,-1,1,1,-3,1,3,-1,-3,3,-3,-3,3,1,3,1,-3,3,1,3,1,1,3,3,-1,-1,-3,1,-3,-1,3,1,1,3,-1,-1,1,-3,1,3,-3,1,-1,-3,-1,3,1,3,1,-1,-3,-3,-1,-1,-3,-3,-3,-1,-1,-3,3,-1,-1,-1,-1,1,1,-3,3,1,3,3,1,-1,1,-3,1,-3,1,1,-3,-1,1,3,-1,3,3,-1,-3,1,-1,-3,3,3,3,-1,1,1,3,-1,-3,-1,3,-1,-1,-1,1,1,1,1,1,-1,3,-1,-3,1,1,3,-3,1,-3,-1,1,1,-3,-3,3,1,1,-3,1,3,3,1,-1,-3,3,-1,3,3,3,-3,1,-1,1,-1,-3,-1,1,3,-1,3,-3,-3,-1,-3,3,-3,-3,-3,-1,-1,-3,-1,-3,3,1,3,-3,-1,3,-1,1,-1,3,-3,1,-1,-3,-3,1,1,-1,1,-1,1,-1,3,1,-3,-1,1,-1,1,-1,-1,3,3,-3,-1,1,-3,-3,-1,-3,3,1,-1,-3,-1,-3,-3,3,-3,3,-3,-1,1,3,1,-3,1,3,3,-1,-3,-1,-1,-1,-1,3,3,3,1,3,3,-3,1,3,-1,3,-1,3,3,-3,3,1,-1,3,3,1,-1,3,3,-1,-3,3,-3,-1,-1,3,-1,3,-1,-1,1,1,1,1,-1,-1,-3,-1,3,1,-1,1,-1,3,-1,3,1,1,-1,-1,-3,1,1,-3,1,3,-3,1,1,-3,-3,-1,-1,-3,-1,1,3,1,1,-3,-1,-1,-3,3,-3,3,1,-3,3,-3,1,-1,1,-3,1,1,1,-1,-3,3,3,1,1,3,-1,-3,-1,-1,-1,3,1,-3,-3,-1,3,-3,-1,-3,-1,-3,-1,-1,-3,-1,-1,1,-3,-1,-1,1,-1,-3,1,1,-3,1,-3,-3,3,1,1,-1,3,-1,-1,1,1,-1,-1,-3,-1,3,-1,3,-1,1,3,1,-1,3,1,3,-3,-3,1,-1,-1,1,3
 };
 
-void generate_ul_ref_sigs(void) {
+void generate_ul_ref_sigs(void)
+{
   double qbar,phase;
   unsigned int u,v,Msc_RS,q,m,n;
 
@@ -52,7 +53,7 @@ void generate_ul_ref_sigs(void) {
     for (u=0; u<30; u++) {
       for (v=0; v<2; v++) {
         qbar = ref_primes[Msc_RS] * (u+1)/(double)31;
-        ul_ref_sigs[u][v][Msc_RS] = (int16_t *)malloc16(2*sizeof(int16_t)*dftsizes[Msc_RS]);
+        ul_ref_sigs[u][v][Msc_RS] = (int16_t*)malloc16(2*sizeof(int16_t)*dftsizes[Msc_RS]);
 
         if ((((int)floor(2*qbar))&1) == 0)
           q = (int)(floor(qbar+.5)) - v;
@@ -60,7 +61,7 @@ void generate_ul_ref_sigs(void) {
           q = (int)(floor(qbar+.5)) + v;
 
 #ifdef MAIN
-        printf("Msc_RS %u (%d), u %u, v %u -> q %u (qbar %f)\n",Msc_RS,dftsizes[Msc_RS],u,v,q,qbar);
+        printf("Msc_RS %d (%d), u %d, v %d -> q %d (qbar %f)\n",Msc_RS,dftsizes[Msc_RS],u,v,q,qbar);
 #endif
 
         for (n=0; n<dftsizes[Msc_RS]; n++) {
@@ -88,26 +89,32 @@ void generate_ul_ref_sigs(void) {
 
   // These are the sequences for RB 1
   for (u=0; u<30; u++) {
-    ul_ref_sigs[u][0][0] = (int16_t *)malloc16(2*sizeof(int16_t)*dftsizes[0]);
+    ul_ref_sigs[u][0][0] = (int16_t*)malloc16(2*sizeof(int16_t)*dftsizes[0]);
 
     for (n=0; n<dftsizes[0]; n++) {
       ul_ref_sigs[u][0][0][n<<1]    =(int16_t)(floor(32767*cos(M_PI*ref12[(u*12) + n]/4)));
       ul_ref_sigs[u][0][0][1+(n<<1)]=(int16_t)(floor(32767*sin(M_PI*ref12[(u*12) + n]/4)));
     }
+
   }
 
   // These are the sequences for RB 2
   for (u=0; u<30; u++) {
-    ul_ref_sigs[u][0][1] = (int16_t *)malloc16(2*sizeof(int16_t)*dftsizes[1]);
+    ul_ref_sigs[u][0][1] = (int16_t*)malloc16(2*sizeof(int16_t)*dftsizes[1]);
 
     for (n=0; n<dftsizes[1]; n++) {
       ul_ref_sigs[u][0][1][n<<1]    =(int16_t)(floor(32767*cos(M_PI*ref24[(u*24) + n]/4)));
       ul_ref_sigs[u][0][1][1+(n<<1)]=(int16_t)(floor(32767*sin(M_PI*ref24[(u*24) + n]/4)));
     }
+
+
+
   }
+
 }
 
-void generate_ul_ref_sigs_rx(void) {
+void generate_ul_ref_sigs_rx(void)
+{
   double qbar,phase;
   unsigned int u,v,Msc_RS,q,m,n;
 
@@ -116,7 +123,7 @@ void generate_ul_ref_sigs_rx(void) {
     for (u=0; u<30; u++) {
       for (v=0; v<2; v++) {
         qbar = ref_primes[Msc_RS] * (u+1)/(double)31;
-        ul_ref_sigs_rx[u][v][Msc_RS] = (int16_t *)malloc16(2*sizeof(int16_t)*dftsizes[Msc_RS]);
+        ul_ref_sigs_rx[u][v][Msc_RS] = (int16_t*)malloc16(2*sizeof(int16_t)*dftsizes[Msc_RS]);
 
         if ((((int)floor(2*qbar))&1) == 0)
           q = (int)(floor(qbar+.5)) - v;
@@ -124,7 +131,7 @@ void generate_ul_ref_sigs_rx(void) {
           q = (int)(floor(qbar+.5)) + v;
 
 #ifdef MAIN
-        printf("Msc_RS %u (%d), u %u, v %u -> q %u (qbar %f)\n",Msc_RS,dftsizes[Msc_RS],u,v,q,qbar);
+        printf("Msc_RS %d (%d), u %d, v %d -> q %d (qbar %f)\n",Msc_RS,dftsizes[Msc_RS],u,v,q,qbar);
 #endif
 
         for (n=0; n<dftsizes[Msc_RS]; n++) {
@@ -152,7 +159,7 @@ void generate_ul_ref_sigs_rx(void) {
 
   // These are the sequences for RB 1
   for (u=0; u<30; u++) {
-    ul_ref_sigs_rx[u][0][0] = (int16_t *)malloc16(2*sizeof(int16_t)*dftsizes[0]);
+    ul_ref_sigs_rx[u][0][0] = (int16_t*)malloc16(2*sizeof(int16_t)*dftsizes[0]);
 
     for (n=0; n<dftsizes[0]; n++) {
       ul_ref_sigs_rx[u][0][0][n<<1]    = (int16_t)(floor(32767*cos(M_PI*ref12[(u*12) + n]/4)));
@@ -162,17 +169,21 @@ void generate_ul_ref_sigs_rx(void) {
 
   // These are the sequences for RB 2
   for (u=0; u<30; u++) {
-    ul_ref_sigs_rx[u][0][1] = (int16_t *)malloc16(2*sizeof(int16_t)*dftsizes[1]);
+    ul_ref_sigs_rx[u][0][1] = (int16_t*)malloc16(2*sizeof(int16_t)*dftsizes[1]);
 
     for (n=0; n<dftsizes[1]; n++) {
       ul_ref_sigs_rx[u][0][1][n<<1]    = (int16_t)(floor(32767*cos(M_PI*ref24[(u*24) + n]/4)));
       ul_ref_sigs_rx[u][0][1][1+(n<<1)]= (int16_t)(floor(32767*sin(M_PI*ref24[(u*24) + n]/4)));
     }
+
   }
+
 }
 
 
-void free_ul_ref_sigs(void) {
+void free_ul_ref_sigs(void)
+{
+
   unsigned int u,v,Msc_RS;
 
   for (Msc_RS=0; Msc_RS<34; Msc_RS++) {
@@ -193,7 +204,9 @@ void free_ul_ref_sigs(void) {
 }
 
 #ifdef MAIN
-main() {
+main()
+{
+
   generate_ul_ref_sigs();
   generate_ul_ref_sigs_rx();
   free_ul_ref_sigs();

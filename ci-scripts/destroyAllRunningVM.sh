@@ -30,7 +30,19 @@ function destroy_usage {
     echo "------"
     echo "    oai-ci-vm-tool destroy [OPTIONS]"
     echo ""
-    command_options_usage
+    echo "Mandatory Options:"
+    echo "--------"
+    echo "    --job-name #### OR -jn ####"
+    echo "    Specify the name of the Jenkins job."
+    echo ""
+    echo "    --build-id #### OR -id ####"
+    echo "    Specify the build ID of the Jenkins job."
+    echo ""
+    echo "Options:"
+    echo "--------"
+    echo "    --help OR -h"
+    echo "    Print this help message."
+    echo ""
 }
 
 function destroy_vm {

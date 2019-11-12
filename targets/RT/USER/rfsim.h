@@ -27,14 +27,10 @@
 #include "PHY/defs_UE.h"
 #include "PHY/defs_eNB.h"
 
-void init_ocm(void);
+void init_ocm(double snr_dB,double sinr_dB);
 
 void update_ocm(double snr_dB,double sinr_dB);
 
-//extern pthread_mutex_t async_server_lock;
-//extern pthread_cond_t async_server_notify;
-//extern int async_server_shutdown;
-
 void init_channel_vars(void);
 
-#endif
+#endif 

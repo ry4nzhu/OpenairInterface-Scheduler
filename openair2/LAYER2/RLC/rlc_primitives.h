@@ -202,5 +202,4 @@ struct crlc_primitive {
     struct crlc_status_ind c_status_ind;
   } primitive;
 };
-
 #endif

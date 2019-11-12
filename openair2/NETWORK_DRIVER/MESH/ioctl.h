@@ -64,8 +64,7 @@
 // Max number of entry of a message list
 #define NAS_LIST_CX_MAX 32
 #define NAS_LIST_RB_MAX 32
-#define NAS_LIST_CLASS_MAX 16 // 32 is too high!!:
-/* risk of  stack problems: KEEP ATTENTION TO COMPILATION WARNINGS */
+#define NAS_LIST_CLASS_MAX  32
 
 typedef unsigned short nasMsgType_t;
 

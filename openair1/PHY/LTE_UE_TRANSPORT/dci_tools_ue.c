@@ -46,7 +46,6 @@
 
 //#define DEBUG_DCI
 
-
 #include "../LTE_TRANSPORT/dci_tools_common_extern.h"
 #include "../LTE_TRANSPORT/transport_proto.h"
 #include "transport_proto_ue.h"
@@ -1282,7 +1281,7 @@ void compute_llr_offset(LTE_DL_FRAME_PARMS *frame_parms,
         symbol_mod = (symbol >= (7-frame_parms->Ncp))? (symbol-(7-frame_parms->Ncp)) : symbol;
         if((symbol_mod == 0) || symbol_mod == (4-frame_parms->Ncp))
         {
-	  if (frame_parms->nb_antenna_ports_eNB == 2)
+	  if (frame_parms->nb_antenna_ports_eNB == 2) 
 	    crs_re = 4;
 	  else
 	    crs_re = 2;
@@ -2171,6 +2170,8 @@ int generate_ue_dlsch_params_from_dci(int frame,
                                       uint8_t beamforming_mode,
                                       uint16_t tc_rnti)
 {
+
+    uint8_t harq_pid=0;
     uint8_t frame_type=frame_parms->frame_type;
     uint8_t tpmi=0;
     LTE_UE_DLSCH_t *dlsch0=NULL,*dlsch1=NULL;
@@ -2486,15 +2487,15 @@ int generate_ue_dlsch_params_from_dci(int frame,
     case format1E_2A_M10PRB:
       if (!dlsch[0]) return -1;
 
-      dci_info_extarcted.harq_pid  = ((DCI1E_5MHz_2A_M10PRB_TDD_t *)dci_pdu)->harq_pid;
+      harq_pid  = ((DCI1E_5MHz_2A_M10PRB_TDD_t *)dci_pdu)->harq_pid;
 
-      if (dci_info_extarcted.harq_pid>=8) {
-        LOG_E(PHY,"Format 1E_2A_M10PRB: harq_pid=%d >= 8\n", dci_info_extarcted.harq_pid);
+      if (harq_pid>=8) {
+        LOG_E(PHY,"Format 1E_2A_M10PRB: harq_pid=%d >= 8\n", harq_pid);
         return(-1);
       }
 
-      dlsch[0]->current_harq_pid = dci_info_extarcted.harq_pid;
-      dlsch[0]->harq_ack[subframe].harq_id = dci_info_extarcted.harq_pid;
+      dlsch[0]->current_harq_pid = harq_pid;
+      dlsch[0]->harq_ack[subframe].harq_id = harq_pid;
 
       /*
         tbswap = ((DCI1E_5MHz_2A_M10PRB_TDD_t *)dci_pdu)->tb_swap;
@@ -2509,7 +2510,7 @@ int generate_ue_dlsch_params_from_dci(int frame,
       */
       dlsch0 = dlsch[0];
 
-      dlsch0_harq = dlsch[0]->harq_processes[dci_info_extarcted.harq_pid];
+      dlsch0_harq = dlsch[0]->harq_processes[harq_pid];
       // Needs to be checked
       dlsch0_harq->codeword=0;
       conv_rballoc(((DCI1E_5MHz_2A_M10PRB_TDD_t *)dci_pdu)->rah,
@@ -2625,7 +2626,7 @@ int generate_ue_dlsch_params_from_dci(int frame,
         // is NAK or an ACK was not received
 
         dlsch0->harq_ack[subframe].ack              = 1;
-        dlsch0->harq_ack[subframe].harq_id          = dci_info_extarcted.harq_pid;
+        dlsch0->harq_ack[subframe].harq_id          = harq_pid;
         dlsch0->harq_ack[subframe].send_harq_status = 1;
         dlsch0->active = 0;
         return(0);
@@ -2681,7 +2682,7 @@ int generate_ue_dlsch_params_from_dci(int frame,
     {
       T(T_UE_PHY_DLSCH_UE_DCI, T_INT(0), T_INT(frame%1024), T_INT(subframe),
         T_INT(dlsch[0]->rnti), T_INT(dci_format),
-        T_INT(dci_info_extarcted.harq_pid),
+        T_INT(harq_pid),
         T_INT(dlsch0_harq->mcs),
         T_INT(dlsch0_harq->TBS));
     }

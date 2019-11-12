@@ -102,7 +102,6 @@ check_supported_distribution() {
         "ubuntu14.04") return 0 ;;
         "fedora24")    return 0 ;;
         "rhel7")       return 0 ;;
-	"rhel7.6")     return 0 ;;
         "centos7")     return 0 ;;
     esac
     return 1
@@ -177,15 +176,10 @@ compilations() {
   set +e
   {
     rm -f $3
-    if [ "$BUILD_COVERITY_SCAN" == "1" ]; then
-        COV_SCAN_PREFIX="cov-build --dir cov-int"
-    else
-        COV_SCAN_PREFIX=""
-    fi
     if [ "$VERBOSE_COMPILE" == "1" ]; then
-       $COV_SCAN_PREFIX make -j`nproc` $2 VERBOSE=$VERBOSE_COMPILE
+       make -j`nproc` $2 VERBOSE=$VERBOSE_COMPILE
     else
-       $COV_SCAN_PREFIX make -j`nproc` $2
+       make -j`nproc` $2
     fi
 
   } > $dlog/$2.$REL.txt 2>&1
@@ -316,20 +310,10 @@ install_usrp_uhd_driver() {
         # On newer kernels, it fails to install
         $SUDO apt-get -y install uhd-host
     fi
-    # quick workaround for RHE7.6
-    local distribution=$(get_distribution_release)
     if [ -z $1 ]; then
-      if [[ "$distribution" == "rhel7.6" ]]; then
-          $SUDO /usr/local/bin/uhd_images_downloader
-      else
-          $SUDO uhd_images_downloader
-      fi
+      $SUDO uhd_images_downloader
     else
-      if [[ "$distribution" == "rhel7.6" ]]; then
-          $SUDO /usr/local/bin/uhd_images_downloader -i $1
-      else
-          $SUDO uhd_images_downloader -i $1
-      fi
+      $SUDO uhd_images_downloader -i $1
     fi
 }
 
@@ -644,6 +628,8 @@ check_install_oai_software() {
 	libidn2-0-dev  \
 	libidn11-dev \
 	libmysqlclient-dev  \
+	liboctave-dev \
+	libpgm-dev \
 	libpython2.7-dev \
 	libsctp1  \
 	libsctp-dev  \
@@ -654,6 +640,7 @@ check_install_oai_software() {
 	libxml2-dev  \
 	libxslt1-dev \
 	mscgen  \
+	octave \
 	octave-signal \
 	openssh-client \
 	openssh-server \
@@ -665,8 +652,7 @@ check_install_oai_software() {
 	pydb \
 	libyaml-dev \
 	wget \
-	libxpm-dev \
-        libboost-all-dev
+	libxpm-dev
 
     $SUDO update-alternatives --set "$LAPACK_LIBNAME" "$LAPACK_TARGET"
 
@@ -714,6 +700,8 @@ check_install_oai_software() {
       libidn2-devel  \
       libidn-devel \
       mariadb-devel \
+      octave-devel \
+      openpgm-devel \
       lksctp-tools \
       lksctp-tools-devel \
       openssl-devel \
@@ -723,6 +711,8 @@ check_install_oai_software() {
       libxml2 \
       libxml2-devel \
       libxslt-devel \
+      octave \
+      octave-signal \
       openssh-clients \
       openssh-server \
       openssl \
@@ -745,7 +735,7 @@ check_install_oai_software() {
       libyaml-devel
   fi
 
-    install_asn1c_from_source $1
+    install_asn1c_from_source
     $SUDO rm -fr /opt/ssh
     $SUDO git clone https://gist.github.com/2190472.git /opt/ssh
 }

@@ -25,7 +25,7 @@ function build_usage {
     echo "   Original Author: Raphael Defosseux"
     echo "   Requirements:"
     echo "     -- uvtool uvtool-libvirt apt-cacher"
-    echo "     -- $VM_OSREL image already synced"
+    echo "     -- xenial image already synced"
     echo "   Default:"
     echo "     -- eNB with USRP"
     echo ""
@@ -33,8 +33,31 @@ function build_usage {
     echo "------"
     echo "    oai-ci-vm-tool build [OPTIONS]"
     echo ""
-    command_options_usage
-
+    echo "Mandatory Options:"
+    echo "--------"
+    echo "    --job-name #### OR -jn ####"
+    echo "    Specify the name of the Jenkins job."
+    echo ""
+    echo "    --build-id #### OR -id ####"
+    echo "    Specify the build ID of the Jenkins job."
+    echo ""
+    echo "    --workspace #### OR -ws ####"
+    echo "    Specify the workspace."
+    echo ""
+    echo "Options:"
+    echo "--------"
+    variant_usage
+    echo "    Specify the variant to build."
+    echo ""
+    echo "    --keep-vm-alive OR -k"
+    echo "    Keep the VM alive after the build."
+    echo ""
+    echo "    --daemon OR -D"
+    echo "    Run as daemon"
+    echo ""
+    echo "    --help OR -h"
+    echo "    Print this help message."
+    echo ""
 }
 
 function build_on_vm {
@@ -44,7 +67,7 @@ function build_on_vm {
         STATUS=1
         return
     fi
-    if [[ ! -f /etc/apt/apt.conf.d/01proxy ]] && [[ "$OPTIONAL_APTCACHER" != "true" ]]
+    if [ ! -f /etc/apt/apt.conf.d/01proxy ]
     then
         echo "Missing /etc/apt/apt.conf.d/01proxy file!"
         echo "Is apt-cacher installed and configured?"
@@ -71,24 +94,17 @@ function build_on_vm {
         echo "############################################################"
         echo "Creating VM ($VM_NAME) on Ubuntu Cloud Image base"
         echo "############################################################"
-        acquire_vm_create_lock
-        uvt-kvm create $VM_NAME release=$VM_OSREL --memory $VM_MEMORY --cpu $VM_CPU --unsafe-caching --template ci-scripts/template-host.xml
-        echo "Waiting for VM to be started"
-        uvt-kvm wait $VM_NAME --insecure
-
-        VM_IP_ADDR=`uvt-kvm ip $VM_NAME`
-        echo "$VM_NAME has for IP addr = $VM_IP_ADDR"
-        release_vm_create_lock
-    else
-        echo "Waiting for VM to be started"
-        uvt-kvm wait $VM_NAME --insecure
-
-        VM_IP_ADDR=`uvt-kvm ip $VM_NAME`
-        echo "$VM_NAME has for IP addr = $VM_IP_ADDR"
+        uvt-kvm create $VM_NAME release=xenial --memory $VM_MEMORY --cpu $VM_CPU --unsafe-caching --template ci-scripts/template-host.xml
     fi
 
+    echo "Waiting for VM to be started"
+    uvt-kvm wait $VM_NAME --insecure
+
+    VM_IP_ADDR=`uvt-kvm ip $VM_NAME`
+    echo "$VM_NAME has for IP addr = $VM_IP_ADDR"
+
     echo "############################################################"
-    echo "Copying GIT repo into VM ($VM_NAME)"
+    echo "Copying GIT repo into VM ($VM_NAME)" 
     echo "############################################################"
     if [[ "$VM_NAME" == *"-flexran-rtc"* ]]
     then
@@ -96,12 +112,12 @@ function build_on_vm {
     else
         scp -o StrictHostKeyChecking=no $JENKINS_WKSP/localZip.zip ubuntu@$VM_IP_ADDR:/home/ubuntu
     fi
-    [ -f /etc/apt/apt.conf.d/01proxy ] && scp -o StrictHostKeyChecking=no /etc/apt/apt.conf.d/01proxy ubuntu@$VM_IP_ADDR:/home/ubuntu
+    scp -o StrictHostKeyChecking=no /etc/apt/apt.conf.d/01proxy ubuntu@$VM_IP_ADDR:/home/ubuntu
 
     echo "############################################################"
     echo "Running install and build script on VM ($VM_NAME)"
     echo "############################################################"
-    echo "[ -f 01proxy ] && sudo cp 01proxy /etc/apt/apt.conf.d/" > $VM_CMDS
+    echo "sudo cp 01proxy /etc/apt/apt.conf.d/" > $VM_CMDS
     echo "touch /home/ubuntu/.hushlogin" >> $VM_CMDS
     if [[ "$VM_NAME" == *"-cppcheck"* ]]
     then
@@ -190,6 +206,6 @@ function build_on_vm {
             echo "sudo -E daemon --inherit --unsafe --name=build_daemon --chdir=/home/ubuntu/tmp/cmake_targets -o /home/ubuntu/tmp/cmake_targets/log/install-build.txt ./my-vm-build.sh" >> $VM_CMDS
         fi
     fi
-    ssh -T -o StrictHostKeyChecking=no ubuntu@$VM_IP_ADDR < $VM_CMDS
+    ssh -o StrictHostKeyChecking=no ubuntu@$VM_IP_ADDR < $VM_CMDS
     rm -f $VM_CMDS
 }

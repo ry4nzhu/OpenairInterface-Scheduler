@@ -41,7 +41,7 @@
 
 int parse_stringlist(paramdef_t *cfgoptions, char *val) {
   char *atoken;
-  char *tokctx = NULL;
+  char *tokctx;
   char *tmpval=strdup(val);
   int   numelt=0;
   cfgoptions->numelt=0;
@@ -166,14 +166,13 @@ int config_check_unknown_cmdlineopt(char *prefix) {
   int unknowndetected=0;
   char testprefix[CONFIG_MAXOPTLENGTH];
   int finalcheck = 0;
-  memset(testprefix,0,sizeof(testprefix));
-  memset(testprefix,0,sizeof(testprefix));
 
+  memset(testprefix,0,sizeof(testprefix));
   if (prefix != NULL) {
     if (strcmp(prefix,CONFIG_CHECKALLSECTIONS) == 0)
       finalcheck = 1;
     else if (strlen(prefix) > 0) {
-      sprintf(testprefix,"--%.*s.",CONFIG_MAXOPTLENGTH-4,prefix);
+      sprintf(testprefix,"--%.*s.",CONFIG_MAXOPTLENGTH-1,prefix);
     }
   }
 
@@ -214,7 +213,7 @@ int config_process_cmdline(paramdef_t *cfgoptions,int numoptions, char *prefix) 
 
     /* first check help options, either --help, -h or --help_<section> */
     if (strncmp(oneargv, "-h",2) == 0 || strncmp(oneargv, "--help",6) == 0 ) {
-      char *tokctx = NULL;
+      char *tokctx;
       pp=strtok_r(oneargv, "_",&tokctx);
       config_get_if()->argv_info[i] |= CONFIG_CMDLINEOPT_PROCESSED;
 
@@ -253,9 +252,7 @@ int config_process_cmdline(paramdef_t *cfgoptions,int numoptions, char *prefix) 
         }
 
         if ( ((strlen(oneargv) == 2) && (strcmp(oneargv + 1,cfgpath) == 0))  || /* short option, one "-" */
-             ((strlen(oneargv) > 2) && (strcmp(oneargv + 2,cfgpath ) == 0 )) || /* long option beginning with "--" */
-             ((strlen(oneargv) == 2) && (strcmp(oneargv + 1,cfgoptions[n].optname) == 0) && (cfgoptions[n].paramflags & PARAMFLAG_CMDLINE_NOPREFIXENABLED )) ||
-             ((strlen(oneargv) > 2) && (strcmp(oneargv + 2,cfgpath ) == 0 ) && (cfgoptions[n].paramflags & PARAMFLAG_CMDLINE_NOPREFIXENABLED )) ) {
+             ((strlen(oneargv) > 2) && (strcmp(oneargv + 2,cfgpath ) == 0 )) ) {
           char *valptr=NULL;
           int ret;
           config_get_if()->argv_info[i] |= CONFIG_CMDLINEOPT_PROCESSED;

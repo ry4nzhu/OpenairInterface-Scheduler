@@ -267,7 +267,7 @@ int nas_message_decrypt(
 {
   LOG_FUNC_IN;
 
-  emm_security_context_t *emm_security_context   = NULL;
+  emm_security_context_t *emm_security_context   = (emm_security_context_t*)security;
   int                     bytes                  = length;
 
   /* Decode the header */
@@ -277,8 +277,7 @@ int nas_message_decrypt(
     LOG_TRACE(DEBUG, "MESSAGE TOO SHORT");
     LOG_FUNC_RETURN (TLV_DECODE_BUFFER_TOO_SHORT);
   } else if (size > 1) {
-    if (security) {
-      emm_security_context   = (emm_security_context_t*)security;
+    if (emm_security_context) {
 #if defined(NAS_MME)
 
       if (emm_security_context->ul_count.seq_num > header->sequence_number) {
@@ -377,7 +376,7 @@ int nas_message_decode(
   void               *security)
 {
   LOG_FUNC_IN;
-  emm_security_context_t *emm_security_context   = NULL;
+  emm_security_context_t *emm_security_context   = (emm_security_context_t*)security;
   int bytes;
 
   /* Decode the header */
@@ -386,8 +385,7 @@ int nas_message_decode(
   if (size < 0) {
     LOG_FUNC_RETURN (TLV_DECODE_BUFFER_TOO_SHORT);
   } else if (size > 1) {
-    if (security) {
-      emm_security_context   = (emm_security_context_t*)security;
+    if (emm_security_context) {
 #if defined(NAS_MME)
 
       if (emm_security_context->ul_count.seq_num > msg->header.sequence_number) {
@@ -973,8 +971,6 @@ static int _nas_message_decrypt(
 #else
   direction = SECU_DIRECTION_DOWNLINK;
 #endif
-  if (emm_security_context == NULL)
-    LOG_FUNC_RETURN (0);
 
   switch (security_header_type) {
   case SECURITY_HEADER_TYPE_NOT_PROTECTED:

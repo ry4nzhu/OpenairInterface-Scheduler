@@ -58,7 +58,7 @@
 
 #include "telnetsrv_phycmd.h"
 #include "telnetsrv_proccmd.h"
-static char *telnet_defstatmod[] = {"softmodem","phy","loader","measur"};
+static char *telnet_defstatmod[] = {"softmodem","phy","loader"};
 static telnetsrv_params_t telnetparams;
 #define TELNETSRV_LISTENADDR 0
 #define TELNETSRV_LISTENPORT 1
@@ -123,7 +123,7 @@ void client_printf(const char *message, ...) {
 
   if (telnetparams.new_socket > 0) {
     vsnprintf(telnetparams.msgbuff,sizeof(telnetparams.msgbuff)-1,message, va_args);
-    send(telnetparams.new_socket,telnetparams.msgbuff, strlen(telnetparams.msgbuff), MSG_NOSIGNAL);
+    send(telnetparams.new_socket,telnetparams.msgbuff , strlen(telnetparams.msgbuff), MSG_NOSIGNAL);
   } else {
     vprintf(message, va_args);
   }
@@ -355,7 +355,7 @@ int setgetvar(int moduleindex,char getorset,char *params) {
   char varname[TELNET_CMD_MAXSIZE];
   char *varval=NULL;
   memset(varname,0,sizeof(varname));
-  n = sscanf(params,"%9s %ms",varname,&varval);
+  n = sscanf(params,"%s %ms",varname,&varval);
 
   for ( i=0 ; telnetparams.CmdParsers[moduleindex].var[i].varvalptr != NULL ; i++) {
     if ( strncasecmp(telnetparams.CmdParsers[moduleindex].var[i].varname,varname,strlen(telnetparams.CmdParsers[moduleindex].var[i].varname)) == 0) {
@@ -475,7 +475,7 @@ int process_command(char *buf) {
   memset(cmdb,0,sizeof(cmdb));
   bufbck=strdup(buf);
   rt=CMDSTATUS_NOTFOUND;
-  j = sscanf(buf,"%19s %19s %19[^\t\n]",modulename,cmd,cmdb);
+  j = sscanf(buf,"%9s %9s %[^\t\n]",modulename,cmd,cmdb);
 
   if (telnetparams.telnetdbg > 0)
     printf("process_command: %i words, module=%s cmd=%s, parameters= %s\n",j,modulename,cmd,cmdb);
@@ -500,32 +500,23 @@ int process_command(char *buf) {
       }/* else */
     }/* strncmp: module name test */
     else if (strncasecmp(modulename,"loop",4) == 0 ) {
+      int lc;
       int f = fcntl(telnetparams.new_socket,F_GETFL);
-      int f1=fcntl (telnetparams.new_socket, F_SETFL, O_NONBLOCK | f);
+      fcntl (telnetparams.new_socket, F_SETFL, O_NONBLOCK | f);
 
-      if (f<0 || f1 <0) {
-        client_printf( " Loop won't be cancelable: %s\n",strerror(errno) );
-      }
-
-      for(int lc=0; lc<telnetparams.loopcount; lc++) {
+      for(lc=0; lc<telnetparams.loopcount; lc++) {
         char dummybuff[20];
         char tbuff[64];
+        int rs;
         client_printf(CSI "1J" CSI "1;10H         " STDFMT "%s %i/%i\n",
                       get_time(tbuff,sizeof(tbuff)),lc,telnetparams.loopcount );
         process_command(bufbck+strlen("loop")+1);
-        errno=0;
-        int rs = read(telnetparams.new_socket,dummybuff,sizeof(dummybuff));
+        usleep(telnetparams.loopdelay * 1000);
+        rs = read(telnetparams.new_socket,dummybuff,sizeof(dummybuff));
 
-        if (telnetparams.telnetdbg > 0)
-          client_printf("Received \"%s\" status %d, errno %s while running loop\n",dummybuff,rs,strerror(errno));
-
-        if ( errno != EAGAIN && errno != EWOULDBLOCK) {
-          client_printf( STDFMT " Loop canceled, iteration %i/%i\n",lc,telnetparams.loopcount );
-          lc=telnetparams.loopcount;
+        if ( rs > 0 ) {
           break;
         }
-
-        usleep(telnetparams.loopdelay * 1000);
       }
 
       fcntl (telnetparams.new_socket, F_SETFL, f);
@@ -543,7 +534,7 @@ void run_telnetsrv(void) {
   char buf[TELNET_MAX_MSGLENGTH];
   struct sockaddr cli_addr;
   unsigned int cli_len = sizeof(cli_addr);
-  int readc, filled;
+  int readc , filled;
   int status;
   int optval = 1;
   pthread_setname_np(pthread_self(), "telnet");
@@ -604,7 +595,7 @@ void run_telnetsrv(void) {
       }
 
       if (telnetparams.telnetdbg > 0)
-        printf("[TELNETSRV] Command received: readc %i filled %i \"%s\"\n", readc, filled,buf);
+        printf("[TELNETSRV] Command received: readc %i filled %i \"%s\"\n", readc, filled ,buf);
 
       if (buf[0] == '!') {
         if (buf[1] == '!') {
