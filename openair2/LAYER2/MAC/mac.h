@@ -580,16 +580,16 @@ typedef struct {
     /// BCCH MCS
     uint32_t ccch_mcs;
 
-  /// num PCCH PDU per CC
-  uint32_t total_num_pcch_pdu;
-  /// PCCH buffer size
-  uint32_t pcch_buffer;
-  /// total PCCH buffer size
-  uint32_t total_pcch_buffer;
-  /// BCCH MCS
-  uint32_t pcch_mcs;
+    /// num PCCH PDU per CC
+    uint32_t total_num_pcch_pdu;
+    /// PCCH buffer size
+    uint32_t pcch_buffer;
+    /// total PCCH buffer size
+    uint32_t total_pcch_buffer;
+    /// BCCH MCS
+    uint32_t pcch_mcs;
 
-/// num active users
+    /// num active users
     uint16_t num_dlactive_UEs;
     ///  available number of PRBs for a give SF
     uint16_t available_prbs;

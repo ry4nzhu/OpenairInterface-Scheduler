@@ -92,62 +92,63 @@ schedule_SRS(module_id_t module_idP, frame_t frameP, sub_frame_t subframeP)
   uint16_t srsPeriodicity, srsOffset;
   
   for (CC_id = 0; CC_id < MAX_NUM_CCs; CC_id++) {
+    printf("Available PRBS: %d\n", eNB->eNB_stats[CC_id].available_prbs);
     soundingRS_UL_ConfigCommon = &cc[CC_id].radioResourceConfigCommon->soundingRS_UL_ConfigCommon;
     // check if SRS is enabled in this frame/subframe
     if (soundingRS_UL_ConfigCommon) {
       srs_SubframeConfig = soundingRS_UL_ConfigCommon->choice.setup.srs_SubframeConfig;
       if (cc[CC_id].tdd_Config == NULL) {	// FDD
-	deltaTSFC = deltaTSFCTabType1[srs_SubframeConfig][0];
-	TSFC = deltaTSFCTabType1[srs_SubframeConfig][1];
+        deltaTSFC = deltaTSFCTabType1[srs_SubframeConfig][0];
+        TSFC = deltaTSFCTabType1[srs_SubframeConfig][1];
       } else {		// TDD
-	deltaTSFC = deltaTSFCTabType2[srs_SubframeConfig][0];
-	TSFC = deltaTSFCTabType2[srs_SubframeConfig][1];
+        deltaTSFC = deltaTSFCTabType2[srs_SubframeConfig][0];
+        TSFC = deltaTSFCTabType2[srs_SubframeConfig][1];
       }
       // Sounding reference signal subframes are the subframes satisfying ns/2 mod TSFC (- deltaTSFC
       uint16_t tmp = (subframeP % TSFC);
       
       if ((1 << tmp) & deltaTSFC) {
-	// This is an SRS subframe, loop over UEs
-	for (UE_id = 0; UE_id < MAX_MOBILES_PER_ENB; UE_id++) {
-	  if (!RC.mac[module_idP]->UE_list.active[UE_id]) continue;
-	  ul_req = &RC.mac[module_idP]->UL_req[CC_id].ul_config_request_body;
-	  // drop the allocation if the UE hasn't send RRCConnectionSetupComplete yet
-	  if (mac_eNB_get_rrc_status(module_idP,UE_RNTI(module_idP, UE_id)) < RRC_CONNECTED) continue;
-	  
-	  AssertFatal(UE_list->UE_template[CC_id][UE_id].physicalConfigDedicated != NULL,
-		      "physicalConfigDedicated is null for UE %d\n",
-		      UE_id);
-	  
-	  if ((soundingRS_UL_ConfigDedicated = UE_list->UE_template[CC_id][UE_id].physicalConfigDedicated->soundingRS_UL_ConfigDedicated) != NULL) {
-	    if (soundingRS_UL_ConfigDedicated->present == LTE_SoundingRS_UL_ConfigDedicated_PR_setup) {
-	      get_srs_pos(&cc[CC_id],
-			  soundingRS_UL_ConfigDedicated->choice.
-			  setup.srs_ConfigIndex,
-			  &srsPeriodicity, &srsOffset);
-	      if (((10 * frameP + subframeP) % srsPeriodicity) == srsOffset) {
-		// Program SRS
-		ul_req->srs_present = 1;
-		nfapi_ul_config_request_pdu_t * ul_config_pdu = &ul_req->ul_config_pdu_list[ul_req->number_of_pdus];
-		memset((void *) ul_config_pdu, 0, sizeof(nfapi_ul_config_request_pdu_t));
-		ul_config_pdu->pdu_type =  NFAPI_UL_CONFIG_SRS_PDU_TYPE;
-		ul_config_pdu->pdu_size =  2 + (uint8_t) (2 + sizeof(nfapi_ul_config_srs_pdu));
-		ul_config_pdu->srs_pdu.srs_pdu_rel8.tl.tag = NFAPI_UL_CONFIG_REQUEST_SRS_PDU_REL8_TAG;
-		ul_config_pdu->srs_pdu.srs_pdu_rel8.size = (uint8_t)sizeof(nfapi_ul_config_srs_pdu);
-		ul_config_pdu->srs_pdu.srs_pdu_rel8.rnti = UE_list->UE_template[CC_id][UE_id].rnti;
-		ul_config_pdu->srs_pdu.srs_pdu_rel8.srs_bandwidth = soundingRS_UL_ConfigDedicated->choice.setup.srs_Bandwidth;
-		ul_config_pdu->srs_pdu.srs_pdu_rel8.frequency_domain_position = soundingRS_UL_ConfigDedicated->choice.setup.freqDomainPosition;
-		ul_config_pdu->srs_pdu.srs_pdu_rel8.srs_hopping_bandwidth = soundingRS_UL_ConfigDedicated->choice.setup.srs_HoppingBandwidth;;
-		ul_config_pdu->srs_pdu.srs_pdu_rel8.transmission_comb = soundingRS_UL_ConfigDedicated->choice.setup.transmissionComb;
-		ul_config_pdu->srs_pdu.srs_pdu_rel8.i_srs = soundingRS_UL_ConfigDedicated->choice.setup.srs_ConfigIndex;
-		ul_config_pdu->srs_pdu.srs_pdu_rel8.sounding_reference_cyclic_shift = soundingRS_UL_ConfigDedicated->choice.setup.cyclicShift;		//              ul_config_pdu->srs_pdu.srs_pdu_rel10.antenna_port                   = ;//
-		//              ul_config_pdu->srs_pdu.srs_pdu_rel13.number_of_combs                = ;//
-		RC.mac[module_idP]->UL_req[CC_id].sfn_sf = (frameP << 4) + subframeP;
-		RC.mac[module_idP]->UL_req[CC_id].header.message_id = NFAPI_UL_CONFIG_REQUEST;
-		ul_req->number_of_pdus++;
-	      }	// if (((10*frameP+subframeP) % srsPeriodicity) == srsOffset)
-	    }	// if (soundingRS_UL_ConfigDedicated->present == SoundingRS_UL_ConfigDedicated_PR_setup)
-	  }		// if ((soundingRS_UL_ConfigDedicated = UE_list->UE_template[CC_id][UE_id].physicalConfigDedicated->soundingRS_UL_ConfigDedicated)!=NULL)
-	}		// for (UE_id ...
+        // This is an SRS subframe, loop over UEs
+        for (UE_id = 0; UE_id < MAX_MOBILES_PER_ENB; UE_id++) {
+          if (!RC.mac[module_idP]->UE_list.active[UE_id]) continue;
+          ul_req = &RC.mac[module_idP]->UL_req[CC_id].ul_config_request_body;
+          // drop the allocation if the UE hasn't send RRCConnectionSetupComplete yet
+          if (mac_eNB_get_rrc_status(module_idP,UE_RNTI(module_idP, UE_id)) < RRC_CONNECTED) continue;
+          
+          AssertFatal(UE_list->UE_template[CC_id][UE_id].physicalConfigDedicated != NULL,
+                "physicalConfigDedicated is null for UE %d\n",
+                UE_id);
+          
+          if ((soundingRS_UL_ConfigDedicated = UE_list->UE_template[CC_id][UE_id].physicalConfigDedicated->soundingRS_UL_ConfigDedicated) != NULL) {
+            if (soundingRS_UL_ConfigDedicated->present == LTE_SoundingRS_UL_ConfigDedicated_PR_setup) {
+              get_srs_pos(&cc[CC_id],
+              soundingRS_UL_ConfigDedicated->choice.
+              setup.srs_ConfigIndex,
+              &srsPeriodicity, &srsOffset);
+              if (((10 * frameP + subframeP) % srsPeriodicity) == srsOffset) {
+                // Program SRS
+                ul_req->srs_present = 1;
+                nfapi_ul_config_request_pdu_t * ul_config_pdu = &ul_req->ul_config_pdu_list[ul_req->number_of_pdus];
+                memset((void *) ul_config_pdu, 0, sizeof(nfapi_ul_config_request_pdu_t));
+                ul_config_pdu->pdu_type =  NFAPI_UL_CONFIG_SRS_PDU_TYPE;
+                ul_config_pdu->pdu_size =  2 + (uint8_t) (2 + sizeof(nfapi_ul_config_srs_pdu));
+                ul_config_pdu->srs_pdu.srs_pdu_rel8.tl.tag = NFAPI_UL_CONFIG_REQUEST_SRS_PDU_REL8_TAG;
+                ul_config_pdu->srs_pdu.srs_pdu_rel8.size = (uint8_t)sizeof(nfapi_ul_config_srs_pdu);
+                ul_config_pdu->srs_pdu.srs_pdu_rel8.rnti = UE_list->UE_template[CC_id][UE_id].rnti;
+                ul_config_pdu->srs_pdu.srs_pdu_rel8.srs_bandwidth = soundingRS_UL_ConfigDedicated->choice.setup.srs_Bandwidth;
+                ul_config_pdu->srs_pdu.srs_pdu_rel8.frequency_domain_position = soundingRS_UL_ConfigDedicated->choice.setup.freqDomainPosition;
+                ul_config_pdu->srs_pdu.srs_pdu_rel8.srs_hopping_bandwidth = soundingRS_UL_ConfigDedicated->choice.setup.srs_HoppingBandwidth;;
+                ul_config_pdu->srs_pdu.srs_pdu_rel8.transmission_comb = soundingRS_UL_ConfigDedicated->choice.setup.transmissionComb;
+                ul_config_pdu->srs_pdu.srs_pdu_rel8.i_srs = soundingRS_UL_ConfigDedicated->choice.setup.srs_ConfigIndex;
+                ul_config_pdu->srs_pdu.srs_pdu_rel8.sounding_reference_cyclic_shift = soundingRS_UL_ConfigDedicated->choice.setup.cyclicShift;		//              ul_config_pdu->srs_pdu.srs_pdu_rel10.antenna_port                   = ;//
+                //              ul_config_pdu->srs_pdu.srs_pdu_rel13.number_of_combs                = ;//
+                RC.mac[module_idP]->UL_req[CC_id].sfn_sf = (frameP << 4) + subframeP;
+                RC.mac[module_idP]->UL_req[CC_id].header.message_id = NFAPI_UL_CONFIG_REQUEST;
+                ul_req->number_of_pdus++;
+              }	// if (((10*frameP+subframeP) % srsPeriodicity) == srsOffset)
+            }	// if (soundingRS_UL_ConfigDedicated->present == SoundingRS_UL_ConfigDedicated_PR_setup)
+          }		// if ((soundingRS_UL_ConfigDedicated = UE_list->UE_template[CC_id][UE_id].physicalConfigDedicated->soundingRS_UL_ConfigDedicated)!=NULL)
+        }		// for (UE_id ...
       }			// if((1<<tmp) & deltaTSFC)
       
     }			// SRS config
