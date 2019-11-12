@@ -33,6 +33,7 @@
 #include "targets/RT/USER/lte-softmodem.h"
 #include "LAYER2/MAC/mac.h"
 #include "LAYER2/MAC/mac_extern.h"
+#include "LAYER2/openair2_stats.h"
 
 #include "LAYER2/MAC/mac_proto.h"
 #include "common/utils/LOG/log.h"
@@ -92,7 +93,7 @@ schedule_SRS(module_id_t module_idP, frame_t frameP, sub_frame_t subframeP)
   uint16_t srsPeriodicity, srsOffset;
   
   for (CC_id = 0; CC_id < MAX_NUM_CCs; CC_id++) {
-    printf("Available PRBS: %d\n", eNB->eNB_stats[CC_id].available_prbs);
+    // printf("Available PRBS: %d\n", eNB->eNB_stats[CC_id].available_prbs);
     soundingRS_UL_ConfigCommon = &cc[CC_id].radioResourceConfigCommon->soundingRS_UL_ConfigCommon;
     // check if SRS is enabled in this frame/subframe
     if (soundingRS_UL_ConfigCommon) {
@@ -492,6 +493,10 @@ void
 eNB_dlsch_ulsch_scheduler(module_id_t module_idP, frame_t frameP,
 			  sub_frame_t subframeP)
 {
+
+  // print the status of the eNB first
+  dump_eNB_statistics(module_idP);
+
 
   int               mbsfn_status[MAX_NUM_CCs];
   protocol_ctxt_t   ctxt;

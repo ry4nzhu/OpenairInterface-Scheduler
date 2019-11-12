@@ -16,7 +16,7 @@ void dump_eNB_statistics(module_id_t module_idP) {
 
 
     eNB_MAC_INST *eNB = RC.mac[module_idP];
-     UE_list_t *UE_list;
+	UE_list_t *UE_list;
 
 
     for (CC_id=0 ; CC_id < MAX_NUM_CCs; CC_id++) {
