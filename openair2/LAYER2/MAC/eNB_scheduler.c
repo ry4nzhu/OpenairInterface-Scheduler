@@ -374,7 +374,7 @@ void dump_eNB_statistics(module_id_t module_idP) {
 
             }  	
             */	
-        }
+        // }
     }
 }
 
