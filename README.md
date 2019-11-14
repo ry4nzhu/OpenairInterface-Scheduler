@@ -1,13 +1,14 @@
 # OpenAirInterface is under OpenAirInterface Software Alliance license.
 ├── http://www.openairinterface.org/?page_id=101
+
 ├── http://www.openairinterface.org/?page_id=698
 
-It is distributed under OAI Public License V1.0. 
+* It is distributed under OAI Public License V1.0. 
 The license information is distributed under LICENSE file in the same directory.
 Please see NOTICE.txt for third party software that is included in the sources.
 
 The OpenAirInterface (OAI) software is composed of the following parts: 
-
+```
 openairinterface5g
 ├── ci-scripts: Meta-scripts used by the OSA CI process. Contains also configuration files used day-to-day by CI.
 ├── cmake_targets: Build utilities to compile (simulation, emulation and real-time platforms), and generated build files
@@ -39,7 +40,7 @@ openairinterface5g
     ├── UDP
     ├── UTILS
 └── targets: Top-level wrappers for unitary simulation for PHY channels, system-level emulation (eNB-UE with and without S1), and realtime eNB and UE and RRH GW.
-
+```
 
 RELEASE NOTES:
 
