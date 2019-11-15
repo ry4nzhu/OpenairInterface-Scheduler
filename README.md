@@ -45,16 +45,25 @@ openairinterface5g
 RELEASE NOTES:
 
 v0.1 -> Last stable commit on develop branch before enhancement-10-harmony
+
 v0.2 -> Merge of enhancement-10-harmony to include NGFI RRH + New Interface for RF/BBU
+
 v0.3 -> Last stable commit on develop branch before the merge of feature-131-new-license. This is the last commit with GPL License
+
 v0.4 -> Merge of feature-131-new-license. It closes issue#131 and changes the license to OAI Public License V1.0
+
 v0.5 -> Merge of enhancement-10-harmony-lts. It includes fixes for Ubuntu 16.04 support
+
 v0.5.1 -> Merge of bugfix-137-uplink-fixes. It includes stablity fixes for eNB
+
 v0.5.2 -> Last version with old code for oaisim (abstraction mode works)
+
 v0.6 -> RRH functionality, UE greatly improved, better TDD support,
         a lot of bugs fixed. WARNING: oaisim in PHY abstraction mode does not
         work, you need to use v0.5.2 for that.
+
 v0.6.1 -> Mostly bugfixes. This is the last version without NFAPI.
+
 v1.0.0 -> January 2019. This version first implements the architectural split described in doc/oai_lte_enb_func_split_arch.png picture.
             Only FAPI, nFAPI and IF4.5 interfaces are implemented.
             Repository tree structure prepares future integrations of features such as LTE-M, nbIOT or 5G-NR.
