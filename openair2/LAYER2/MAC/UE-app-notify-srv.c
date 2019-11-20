@@ -13,7 +13,7 @@
 #define BIND_IP "10.0.1.2"
 #define BUF_SIZE 1024
 #define REQUEST_STR "GET_APP_TYPE"
-#define RESPONSE_STR "12"
+#define RESPONSE_STR "1"
 
 
 void clearBuf(char* b) {
@@ -59,18 +59,17 @@ int main(int argc, char *argv[]) {
     while (1) {
         printf("\nWaiting for a TCP request...\n");
 
-		// accept a TCP peer connection
+        // accept a TCP peer connection
         peer_addr_size = sizeof(struct sockaddr_in);
         memset(&peer_addr, 0, peer_addr_size);
         cfd = accept(sockfd, (struct sockaddr *) &peer_addr, &peer_addr_size);
         if (cfd == -1) {
-            perror("accept:");
-			continue;
-		}
+          perror("accept:");
+            continue;
+        }
 
         printf("\nConnected to a client...\n");
 
-		
         // receive & send
 		while (1) {
 			printf("\nWaiting to receive data\n");

@@ -33,18 +33,18 @@ int req2buf(char *buf, int size) {
 }
 
 int main(int argc, char *argv[]) {
-    char buf[BUF_SIZE] = {0};
+  char buf[BUF_SIZE] = {0};
 	int len;
 	/* socket programming */
-    int sockfd, nBytes;
-    struct sockaddr_in addr_con;
-    int addrlen = sizeof(addr_con);
-    addr_con.sin_family = AF_INET;
-    addr_con.sin_port = htons(PORT_NO);
-    addr_con.sin_addr.s_addr = inet_addr(IP_ADDRESS);
+  int sockfd, nBytes;
+  struct sockaddr_in addr_con;
+  int addrlen = sizeof(addr_con);
+  addr_con.sin_family = AF_INET;
+  addr_con.sin_port = htons(PORT_NO);
+  addr_con.sin_addr.s_addr = inet_addr(IP_ADDRESS);
 	/* shared memory */
 	int shmid;
-   	struct shmseg *shmp;
+  struct shmseg *shmp;
 	/* strtol */
 	int base = 10;
 	char *endptr = NULL;
@@ -62,18 +62,18 @@ int main(int argc, char *argv[]) {
 	}
 	printf("Connected to the server.\n");
 
-   	shmid = shmget(SHM_KEY, sizeof(struct shmseg), 0644|IPC_CREAT);
-   	if (shmid == -1) {
-   	   perror("Shared memory");
-   	   return 1;
-   	}
+  shmid = shmget(SHM_KEY, sizeof(struct shmseg), 0644|IPC_CREAT);
+  if (shmid == -1) {
+     perror("Shared memory");
+     return 1;
+  }
    	
-   	// Attach to the segment to get a pointer to it.
-   	shmp = shmat(shmid, NULL, 0);
-   	if (shmp == (void *) -1) {
-   	   perror("Shared memory attach");
-   	   return 1;
-   	}
+  // Attach to the segment to get a pointer to it.
+  shmp = shmat(shmid, NULL, 0);
+  if (shmp == (void *) -1) {
+     perror("Shared memory attach");
+     return 1;
+  }
 
 	while (1) {
 		// send
@@ -85,6 +85,10 @@ int main(int argc, char *argv[]) {
 		memset(buf, 0, sizeof(buf));
 		nBytes = recv(sockfd, buf, sizeof(buf), sendrecvflag);
 		// TODO: handle error
+		if (nBytes == -1) {
+		  perror("recv error");
+		  exit(1);
+		}
 
 		// process
 		if (nBytes > 0) {
