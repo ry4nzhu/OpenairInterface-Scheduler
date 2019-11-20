@@ -10,7 +10,7 @@
 #define IP_PROTOCOL 0
 #define TXRXFLAG 0
 #define BIND_PORT 31671
-#define BIND_IP "10.0.1.1" // this should happen at eNB machine
+#define BIND_IP "10.10.1.1" // this should happen at eNB machine
 #define BUF_SIZE 1024
 #define REQUEST_STR "GET_APP_TYPE"
 #define RESPONSE_STR "1"
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
         memset(&peer_addr, 0, peer_addr_size);
         cfd = accept(sockfd, (struct sockaddr *) &peer_addr, &peer_addr_size);
         if (cfd == -1) {
-          perror("accept:");
+            perror("accept:");
             continue;
         }
 

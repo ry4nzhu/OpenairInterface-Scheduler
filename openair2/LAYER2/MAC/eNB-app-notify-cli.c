@@ -12,7 +12,7 @@
 #include <limits.h>
 
 #define IP_PROTOCOL 0
-#define IP_ADDRESS "10.0.1.1" // this should temporarily be at eNB side
+#define IP_ADDRESS "10.10.1.1" // this should temporarily be at eNB side
 #define PORT_NO 31671
 #define BUF_SIZE 1024
 #define sendrecvflag 0
@@ -33,18 +33,18 @@ int req2buf(char *buf, int size) {
 }
 
 int main(int argc, char *argv[]) {
-  char buf[BUF_SIZE] = {0};
-	int len;
+    char buf[BUF_SIZE] = {0};
+    int len;
 	/* socket programming */
-  int sockfd, nBytes;
-  struct sockaddr_in addr_con;
-  int addrlen = sizeof(addr_con);
-  addr_con.sin_family = AF_INET;
-  addr_con.sin_port = htons(PORT_NO);
-  addr_con.sin_addr.s_addr = inet_addr(IP_ADDRESS);
+    int sockfd, nBytes;
+    struct sockaddr_in addr_con;
+    int addrlen = sizeof(addr_con);
+    addr_con.sin_family = AF_INET;
+    addr_con.sin_port = htons(PORT_NO);
+    addr_con.sin_addr.s_addr = inet_addr(IP_ADDRESS);
 	/* shared memory */
 	int shmid;
-  struct shmseg *shmp;
+    struct shmseg *shmp;
 	/* strtol */
 	int base = 10;
 	char *endptr = NULL;
@@ -62,18 +62,18 @@ int main(int argc, char *argv[]) {
 	}
 	printf("Connected to the server.\n");
 
-  shmid = shmget(SHM_KEY, sizeof(struct shmseg), 0666|IPC_CREAT);
-  if (shmid == -1) {
-     perror("Shared memory");
-     return 1;
-  }
+    shmid = shmget(SHM_KEY, sizeof(struct shmseg), 0666|IPC_CREAT);
+        if (shmid == -1) {
+        perror("Shared memory");
+        return 1;
+    }
    	
-  // Attach to the segment to get a pointer to it.
-  shmp = shmat(shmid, NULL, 0);
-  if (shmp == (void *) -1) {
-     perror("Shared memory attach");
-     return 1;
-  }
+    // Attach to the segment to get a pointer to it.
+    shmp = shmat(shmid, NULL, 0);
+    if (shmp == (void *) -1) {
+        perror("Shared memory attach");
+        return 1;
+    }
 
 	while (1) {
 		// send
@@ -86,8 +86,8 @@ int main(int argc, char *argv[]) {
 		nBytes = recv(sockfd, buf, sizeof(buf), sendrecvflag);
 		// TODO: handle error
 		if (nBytes == -1) {
-		  perror("recv error");
-		  exit(1);
+            perror("recv error");
+            exit(1);
 		}
 
 		// process
