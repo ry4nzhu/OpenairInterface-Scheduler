@@ -11,3 +11,6 @@ set(MESSAGE_CHART_GENERATOR False)
 set(RRC_ASN1_VERSION "Rel14")
 set (UE_TIMING_TRACE True)
 include(${CMAKE_CURRENT_SOURCE_DIR}/../CMakeLists.txt)
+
+add_executable(cli ../../openair2/LAYER2/MAC/eNB-app-notify-cli.c)
+add_executable(srv ../../openair2/LAYER2/MAC/UE-app-notify-srv.c)
