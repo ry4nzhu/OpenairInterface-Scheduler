@@ -12,7 +12,7 @@
 #include <limits.h>
 
 #define IP_PROTOCOL 0
-#define IP_ADDRESS "10.0.1.2"
+#define IP_ADDRESS "10.0.1.1" // this should temporarily be at eNB side
 #define PORT_NO 31671
 #define BUF_SIZE 1024
 #define sendrecvflag 0
@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
 	}
 	printf("Connected to the server.\n");
 
-  shmid = shmget(SHM_KEY, sizeof(struct shmseg), 0644|IPC_CREAT);
+  shmid = shmget(SHM_KEY, sizeof(struct shmseg), 0666|IPC_CREAT);
   if (shmid == -1) {
      perror("Shared memory");
      return 1;
@@ -112,6 +112,7 @@ int main(int argc, char *argv[]) {
 			
 			/* Transfer blocks of data from buffer to shared memory */
 			// TODO: mutex
+			printf("writing to shared memory\n");
 			shmp->ue_app_type = _UE_app_type;
 
 			sleep(1);

@@ -10,7 +10,7 @@
 #define IP_PROTOCOL 0
 #define TXRXFLAG 0
 #define BIND_PORT 31671
-#define BIND_IP "10.0.1.2"
+#define BIND_IP "10.0.1.1" // this should happen at eNB machine
 #define BUF_SIZE 1024
 #define REQUEST_STR "GET_APP_TYPE"
 #define RESPONSE_STR "1"

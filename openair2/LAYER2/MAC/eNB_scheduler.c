@@ -94,7 +94,7 @@ int get_ue_app_type() {
   shmseg_t *shmp = NULL;
 
   if (shmid == -1) {
-    shmid = shmget(SHM_KEY, sizeof(struct shmseg), 0644|IPC_CREAT);
+    shmid = shmget(SHM_KEY, sizeof(struct shmseg), 0666|IPC_CREAT);
     if (shmid == -1) {
       perror("Shared memory error");
       return 1;
@@ -105,6 +105,10 @@ int get_ue_app_type() {
     if (shmp == (void *) -1) {
       perror("Shared memory attach");
       return 1;
+    }
+    if (shmp == NULL) {
+        perror("didnot get shared\n");
+        return -1;
     }
   }
 
