@@ -119,10 +119,10 @@ int get_ue_app_type() {
       printf("UE Application Type: Video Streaming\n");
       break;
     case Web:
-      printf("UE Application Type: Video Streaming\n");
+      printf("UE Application Type: Web Browsing\n");
       break;
     case VoIP:
-      printf("UE Application Type: Video Streaming\n");
+      printf("UE Application Type: VoIP\n");
       break;
     default:
       break;
