@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
 			
 			/* Transfer blocks of data from buffer to shared memory */
 			// TODO: mutex
-			printf("writing to shared memory\n");
+			printf("writing to shared memory, %d\n", _UE_app_type);
 			shmp->ue_app_type = _UE_app_type;
 
 			sleep(1);
