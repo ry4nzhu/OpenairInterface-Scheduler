@@ -2513,35 +2513,33 @@ allocate_prbs_sub(int nb_rb, int N_RB_DL, int N_RBG, uint8_t * rballoc)
 
       switch (N_RB_DL) {
       case 6:
-	nb_rb--;
-	break;
+        nb_rb--;
+        break;
 
       case 25:
-	if ((check == N_RBG - 1)) {
-	  nb_rb--;
-	} else {
-	  nb_rb -= 2;
-	}
-
-	break;
+        if ((check == N_RBG - 1)) {
+          nb_rb--;
+        } else {
+          nb_rb -= 2;
+        }
+        break;
 
       case 50:
-	if ((check == N_RBG - 1)) {
-	  nb_rb -= 2;
-	} else {
-	  nb_rb -= 3;
-	}
-
-	break;
+        if ((check == N_RBG - 1)) {
+          nb_rb -= 2;
+        } else {
+          nb_rb -= 3;
+        }
+        break;
 
       case 100:
-	nb_rb -= 4;
-	break;
-      }
-    }
-    //      printf("rb_alloc %x\n",rballoc_dci);
-    check = check + 1;
-    //    check1 = check1+2;
+        nb_rb -= 4;
+        break;
+            }
+          }
+          //      printf("rb_alloc %x\n",rballoc_dci);
+          check = check + 1;
+          //    check1 = check1+2;
   }
 
   // rballoc_dci = (rballoc_dci)&(0x1fff);

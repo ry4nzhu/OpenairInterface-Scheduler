@@ -107,6 +107,9 @@ unsigned char I_TBS2I_MCS(unsigned char I_TBS)
   return I_MCS;
 }
 
+// get transport block size for downlink
+// mcs modulation scheme
+// nb_rb number of resource block
 uint32_t get_TBS_DL(uint8_t mcs, uint16_t nb_rb)
 {
 
