@@ -11,6 +11,7 @@ The license information is distributed under LICENSE file in the same directory.
 Please see NOTICE.txt for third party software that is included in the sources.
 
 The OpenAirInterface (OAI) software is composed of the following parts: 
+
 ```
 openairinterface5g
 ├── ci-scripts: Meta-scripts used by the OSA CI process. Contains also configuration files used day-to-day by CI.
@@ -75,7 +76,7 @@ v1.0.0 -> January 2019. This version first implements the architectural split de
             New tools: config library, telnet server, ...
             A lot of bugfixes and a proper automated Continuous Integration process validates contributions.
 
-## MISC
+## Scheduling Algorithm
 
 ### Number of PRBs
 
@@ -87,32 +88,32 @@ v1.0.0 -> January 2019. This version first implements the architectural split de
 
 #### `openair2/LAYER2/MAC/eNB_scheduler.c`
 
-- Scheduler mode:
+* Scheduler mode:
   1) `eNB->scheduler_mode == SCHED_MODE_DEFAULT`, if set, function `schedule_ulsch` and `schedule_dlsch` are used for scheduling.
   2) `eNB->scheduler_mode == SCHED_MODE_FAIR_RR`
 
-- Main function that triggers the scheduling procedure: `eNB_dlsch_ulsch_scheduler` at 572. Called by *Physical Interface* `IF_Module.c` function `UL_indication`.
+* Main function that triggers the scheduling procedure: `eNB_dlsch_ulsch_scheduler` at 572. Called by *Physical Interface* `IF_Module.c` function `UL_indication`.
 
-- Scheduling Master Information Block(MIB) `:971`
+* Scheduling Master Information Block(MIB) `:971`
 
 #### Default Scheduler
 
-- UE specific DLSCH scheduling. Retrieves next ue to be scheduled from round-robin scheduler and gets the appropriate harq_pid for the subframe from PHY. If the process is active and requires a retransmission, it schedules the retransmission with the same PRB count and MCS as the first transmission. Otherwise it consults RLC for DCCH/DTCH SDUs (status with maximum number of available PRBS), builds the MAC header (timing advance sent by default) and copies.
+* UE specific DLSCH scheduling. Retrieves next ue to be scheduled from round-robin scheduler and gets the appropriate harq_pid for the subframe from PHY. If the process is active and requires a retransmission, it schedules the retransmission with the same PRB count and MCS as the first transmission. Otherwise it consults RLC for DCCH/DTCH SDUs (status with maximum number of available PRBS), builds the MAC header (timing advance sent by default) and copies.
 
 ##### Data Structures
 
-- `UE_list_t` at `LAYER2/MAC/mac.h:1190`: UE list used by eNB to order UEs/CC for scheduling
+* `UE_list_t` at `LAYER2/MAC/mac.h:1190`: UE list used by eNB to order UEs/CC for scheduling
 
-- downlink scheduling function `schedule_ue_spec` at `eNB_scheduler_dlsch.c: 457`: This is possiblily the place that could be modified.
+* downlink scheduling function `schedule_ue_spec` at `eNB_scheduler_dlsch.c: 457`: This is possiblily the place that could be modified.
 
-- `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 612`
+* `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 612`
 
-- `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 771` : Resource block
+* `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 771` : Resource block
 
-- `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 951 TBS = get_TBS_DL(eNB_UE_stats->dlsch_mcs1,nb_available_rb);`  
+* `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 951 TBS = get_TBS_DL(eNB_UE_stats->dlsch_mcs1,nb_available_rb);`  
 
-- `uint32_t get_TBS_DL(uint8_t mcs, uint16_t nb_rb) at 110` in `openair1/PHY/lte_transport/lte_mcs.c`
+* `uint32_t get_TBS_DL(uint8_t mcs, uint16_t nb_rb) at 110` in `openair1/PHY/lte_transport/lte_mcs.c`
 
-- Transfer block table at `openair1/PHY/LTE_TRANSPORT/dlsch_tbs_full.h : 27 TBStable[TBStable_rowCnt][110]`
+* Transfer block table at `openair1/PHY/LTE_TRANSPORT/dlsch_tbs_full.h : 27 TBStable[TBStable_rowCnt][110]`
 
-- uplink scheduling function `schedule_ulsch_rnti`
+* uplink scheduling function `schedule_ulsch_rnti`
