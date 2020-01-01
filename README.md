@@ -1,6 +1,6 @@
 # OpenAirInterface is under OpenAirInterface Software Alliance license.
 
-* This repo is forked from OpenAirInterface GitLab Repository. The original project repo is: https://gitlab.eurecom.fr/oai/openairinterface5g
+## This repo is forked from OpenAirInterface GitLab Repository. The original project repo is: https://gitlab.eurecom.fr/oai/openairinterface5g
 
 ├── http://www.openairinterface.org/?page_id=101
 
