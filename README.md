@@ -119,3 +119,7 @@ v1.0.0 -> January 2019. This version first implements the architectural split de
 * uplink scheduling function `schedule_ulsch_rnti`
 
 * `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 540` : CALLING Pre_Processor for downlink scheduling (Returns estimation of RBs required by each UE and the allocation on sub-band)
+
+##### Scheduling Algorithm Implementation
+
+* Starving the first active UE: `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 575 - 578` : Just skip scheduling for the first active UE, `continue` in the scheduling loop.
