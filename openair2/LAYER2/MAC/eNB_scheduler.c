@@ -916,9 +916,9 @@ eNB_dlsch_ulsch_scheduler(module_id_t module_idP, frame_t frameP,
     memset(cc[CC_id].vrb_map_UL, 0, 100);
 
 
-#if (LTE_RRC_VERSION >= MAKE_VERSION(10, 0, 0))
-    cc[CC_id].mcch_active        = 0;
-#endif
+    #if (LTE_RRC_VERSION >= MAKE_VERSION(10, 0, 0))
+        cc[CC_id].mcch_active        = 0;
+    #endif
 
     clear_nfapi_information(RC.mac[module_idP], CC_id, frameP, subframeP);
   }
@@ -930,16 +930,16 @@ eNB_dlsch_ulsch_scheduler(module_id_t module_idP, frame_t frameP,
       CC_id = UE_PCCID(module_idP, i);
       
       if (((frameP&127) == 0) && (subframeP == 0)) {
-	LOG_I(MAC,
-	      "UE  rnti %x : %s, PHR %d dB DL CQI %d PUSCH SNR %d PUCCH SNR %d\n",
-	      rnti,
-	      UE_list->UE_sched_ctrl[i].ul_out_of_sync ==
-	      0 ? "in synch" : "out of sync",
-	      UE_list->UE_template[CC_id][i].phr_info,
-	      UE_list->UE_sched_ctrl[i].dl_cqi[CC_id],
-	      (5*UE_list->UE_sched_ctrl[i].pusch_snr[CC_id] - 640) / 10,
-	      (5*UE_list->UE_sched_ctrl[i].pucch1_snr[CC_id] - 640) / 10);
-      }
+        LOG_I(MAC,
+          "UE  rnti %x : %s, PHR %d dB DL CQI %d PUSCH SNR %d PUCCH SNR %d\n",
+          rnti,
+          UE_list->UE_sched_ctrl[i].ul_out_of_sync ==
+          0 ? "in synch" : "out of sync",
+          UE_list->UE_template[CC_id][i].phr_info,
+          UE_list->UE_sched_ctrl[i].dl_cqi[CC_id],
+          (5*UE_list->UE_sched_ctrl[i].pusch_snr[CC_id] - 640) / 10,
+          (5*UE_list->UE_sched_ctrl[i].pucch1_snr[CC_id] - 640) / 10);
+        }
       
       RC.eNB[module_idP][CC_id]->pusch_stats_bsr[i][(frameP * 10) +
 						    subframeP] = -63;

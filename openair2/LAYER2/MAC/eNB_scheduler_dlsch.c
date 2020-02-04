@@ -572,6 +572,10 @@ schedule_ue_spec(module_id_t module_idP, int slice_idxP,
       continue;
 
     for (UE_id = UE_list->head; UE_id >= 0; UE_id = UE_list->next[UE_id]) {
+      if (UE_id == UE_list->head) {
+        continue; // well, try to starve the first UE....
+      }
+      
       LOG_D(MAC, "doing schedule_ue_spec for CC_id %d UE %d\n", CC_id, UE_id);
       continue_flag = 0; // reset the flag to allow allocation for the remaining UEs
       rnti = UE_RNTI(module_idP, UE_id);

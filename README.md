@@ -1,18 +1,18 @@
-# OpenAirInterface is under OpenAirInterface Software Alliance license.
+# OpenAirInterface is under OpenAirInterface Software Alliance license
 
-## This repo is forked from OpenAirInterface GitLab Repository. The original project repo is: https://gitlab.eurecom.fr/oai/openairinterface5g
+## This repo is forked from OpenAirInterface GitLab Repository. The original project repo is: <https://gitlab.eurecom.fr/oai/openairinterface5g>
 
-├── http://www.openairinterface.org/?page_id=101
+├── <http://www.openairinterface.org/?page_id=101>
 
-├── http://www.openairinterface.org/?page_id=698
+├── <http://www.openairinterface.org/?page_id=698>
 
-* It is distributed under OAI Public License V1.0. 
+* It is distributed under OAI Public License V1.0.
 The license information is distributed under LICENSE file in the same directory.
 Please see NOTICE.txt for third party software that is included in the sources.
 
-The OpenAirInterface (OAI) software is composed of the following parts: 
+The OpenAirInterface (OAI) software is composed of the following parts:
 
-```
+```text
 openairinterface5g
 ├── ci-scripts: Meta-scripts used by the OSA CI process. Contains also configuration files used day-to-day by CI.
 ├── cmake_targets: Build utilities to compile (simulation, emulation and real-time platforms), and generated build files
@@ -117,3 +117,5 @@ v1.0.0 -> January 2019. This version first implements the architectural split de
 * Transfer block table at `openair1/PHY/LTE_TRANSPORT/dlsch_tbs_full.h : 27 TBStable[TBStable_rowCnt][110]`
 
 * uplink scheduling function `schedule_ulsch_rnti`
+
+* `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 540` : CALLING Pre_Processor for downlink scheduling (Returns estimation of RBs required by each UE and the allocation on sub-band)
