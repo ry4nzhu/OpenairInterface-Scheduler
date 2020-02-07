@@ -518,6 +518,7 @@ schedule_ue_spec(module_id_t module_idP, int slice_idxP,
   aggregation = 2;
 
   for (CC_id = 0; CC_id < RC.nb_mac_CC[module_idP]; CC_id++) {
+    // this dl_Bandwidth is enumerated to 6, 15, 25, 50 and 100
     N_RB_DL[CC_id] = to_prb(cc[CC_id].mib->message.dl_Bandwidth);
     min_rb_unit[CC_id] = get_min_rb_unit(module_idP, CC_id);
     // get number of PRBs less those used by common channels
@@ -572,9 +573,10 @@ schedule_ue_spec(module_id_t module_idP, int slice_idxP,
       continue;
 
     for (UE_id = UE_list->head; UE_id >= 0; UE_id = UE_list->next[UE_id]) {
-      if (UE_id == UE_list->head) {
-        continue; // well, try to starve the first UE....
-      }
+      /* lets comment out this dumb strategy for now... */
+      // if (UE_id == UE_list->head) {
+      //   continue; // well, try to starve the first UE....
+      // }
       
       LOG_D(MAC, "doing schedule_ue_spec for CC_id %d UE %d\n", CC_id, UE_id);
       continue_flag = 0; // reset the flag to allow allocation for the remaining UEs

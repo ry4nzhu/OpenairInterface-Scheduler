@@ -1002,13 +1002,13 @@ eNB_dlsch_ulsch_scheduler(module_id_t module_idP, frame_t frameP,
 	    if(ul_req_tmp){
 	      int pdu_number = ul_req_tmp->number_of_pdus;
 	      for(int pdu_index = pdu_number-1; pdu_index >= 0; pdu_index--){
-		if(ul_req_tmp->ul_config_pdu_list[pdu_index].ulsch_pdu.ulsch_pdu_rel8.rnti == rnti){
-		  LOG_I(MAC, "remove UE %x from ul_config_pdu_list %d/%d\n", rnti, pdu_index, pdu_number);
-		  if(pdu_index < pdu_number -1){
-		    memcpy(&ul_req_tmp->ul_config_pdu_list[pdu_index], &ul_req_tmp->ul_config_pdu_list[pdu_index+1], (pdu_number-1-pdu_index) * sizeof(nfapi_ul_config_request_pdu_t));
-		  }
-		  ul_req_tmp->number_of_pdus--;
-		}
+          if(ul_req_tmp->ul_config_pdu_list[pdu_index].ulsch_pdu.ulsch_pdu_rel8.rnti == rnti){
+            LOG_I(MAC, "remove UE %x from ul_config_pdu_list %d/%d\n", rnti, pdu_index, pdu_number);
+            if(pdu_index < pdu_number -1){
+              memcpy(&ul_req_tmp->ul_config_pdu_list[pdu_index], &ul_req_tmp->ul_config_pdu_list[pdu_index+1], (pdu_number-1-pdu_index) * sizeof(nfapi_ul_config_request_pdu_t));
+            }
+            ul_req_tmp->number_of_pdus--;
+          }
 	      }
 	    }
 	  }

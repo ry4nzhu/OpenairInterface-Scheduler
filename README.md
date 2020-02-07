@@ -118,8 +118,22 @@ v1.0.0 -> January 2019. This version first implements the architectural split de
 
 * uplink scheduling function `schedule_ulsch_rnti`
 
-* `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 540` : CALLING Pre_Processor for downlink scheduling (Returns estimation of RBs required by each UE and the allocation on sub-band)
+* `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 540` : CALLING Pre_Processor for downlink scheduling (Returns estimation of RBs required by each UE and the allocation on sub-band). A subband is a collection of n adjacent PRB where n can be 2,3,4,6,8
 
 ##### Scheduling Algorithm Implementation
 
 * Starving the first active UE: `openair2/LAYER2/MAC/eNB_scheduler_dlsch.c: 575 - 578` : Just skip scheduling for the first active UE, `continue` in the scheduling loop.
+
+* `dlsch_scheduler_pre_processor_positioning` at `preprocessor.c: 1230` This procedure does the main allocation of the RBs
+
+* `dlsch_scheduler_pre_processor_positioning --> dlsch_scheduler_pre_processor_allocate` does the allocation process of the resource blocks
+
+##### MISC
+
+* `to_prb` function trnaslate the specified downlink bandwidth to number of RBs
+
+* `to_rbg` function set the Resource Block Group based on rules at <https://www.sharetechnote.com/html/Handbook_LTE_RB_Size_Allocation.html>
+
+* `dlsch_scheduler_pre_processor at preprocessor.c: 1168` This function assigns pre-available RBS to each UE in specified sub-bands before scheduling is done
+
+* `assign_rbs_required at preprocessor.c: 176` This function returns the estimated number of RBs required by each UE for downlink scheduling
