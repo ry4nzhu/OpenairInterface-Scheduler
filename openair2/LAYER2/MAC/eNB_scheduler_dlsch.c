@@ -845,10 +845,10 @@ schedule_ue_spec(module_id_t module_idP, int slice_idxP,
       } else {    /* This is a potentially new SDU opportunity */
         rlc_status.bytes_in_buffer = 0;
         // Now check RLC information to compute number of required RBs
-        // get maximum TBS size for RLC request
+        // get maximum Tansport Block size for RLC request
         TBS = get_TBS_DL(eNB_UE_stats->dlsch_mcs1, nb_available_rb);
 
-        // add the length for  all the control elements (timing adv, drx, etc) : header + payload
+        // add the length for all the control elements (timing adv, drx, etc) : header + payload
 
         if (ue_sched_ctl->ta_timer == 0) {
           ta_update = ue_sched_ctl->ta_update;
@@ -1021,6 +1021,7 @@ schedule_ue_spec(module_id_t module_idP, int slice_idxP,
         }
 
         // TODO: lcid has to be sorted before the actual allocation (similar struct as ue_list).
+        // DTCH: Dedicated Traffic Channel (Traffic Channel)
         for (lcid = NB_RB_MAX - 1; lcid >= DTCH; lcid--) {
           // TODO: check if the lcid is active
           LOG_D(MAC, "[eNB %d], Frame %d, DTCH%d->DLSCH, Checking RLC status (tbs %d, len %d)\n",
